@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.authSys.mapper.UserMapper" >
+    <resultMap id="baseResultMap" type="com.authSys.entity.UserEntity">
+        <id column="user_id" property="userId"/>
+        <result column="acct" property="acct"/>
+        <result column="passwd" property="passwd"/>
+        <result column="user_name" property="userName"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.authSys.entity.UserEntity">
+        insert into t_user(acct, passwd, user_name)
+        values(#{user.acct}, #{user.passwd}, #{user.userName});
+    </insert>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from t_user where user_id = #{userId};
+    </delete>
+
+    <update id="updateUser" parameterType="com.authSys.entity.UserEntity">
+        update t_user
+        <set>
+            <if test="user.passwd != null">
+                passwd = #{user.passwd},
+            </if>
+            <if test="user.userName != null">
+                user_name = #{user.userName}
+            </if>
+        </set>
+        where user_id = #{user.userId}
+    </update>
+
+    <select id="selectAll" resultMap="baseResultMap">
+        select user_id, acct, passwd, user_name from t_user
+    </select>
+
+    <select id="selectById" resultMap="baseResultMap">
+        select user_id, acct, passwd, user_name from t_user where user_id = #{useId}
+    </select>
+
+    <select id="selectByAcctAndPw" resultMap="baseResultMap">
+        select user_id, acct, passwd, user_name from t_user where acct = #{acct} and passwd = #{passwd};
+    </select>
+
+    <!-- 模糊查询，传入的参数是通过java代码加上了%号的 -->
+    <select id="selectByKeyName" resultMap="baseResultMap">
+        select user_id, acct, passwd, user_name from t_user where user_name like #{key}
+    </select>
+</mapper>

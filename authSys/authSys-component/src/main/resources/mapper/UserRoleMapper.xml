@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.authSys.mapper.UserRoleMapper">
+    <resultMap id="baseResultMap" type="com.authSys.entity.UserRoleEntity">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+    </resultMap>
+
+    <insert id="insertOne">
+        insert into user_role(user_id, role_id) values(#{userRoleEntity.userId}, #{userRoleENtity.roleId})
+    </insert>
+
+    <delete id="deleteById">
+        delete from user_role where id = #{id}
+    </delete>
+
+    <select id="selectByUserId" resultMap="baseResultMap">
+        select id, user_id, role_id from user_role where user_id = #{userId}
+    </select>
+
+    <select id="selectByUserIds" resultMap="baseResultMap">
+        select id, user_id, role_id from user_role where user_id in(
+        <foreach collection="ids" item="id">
+            #{id},
+        </foreach>
+        )
+    </select>
+</mapper>

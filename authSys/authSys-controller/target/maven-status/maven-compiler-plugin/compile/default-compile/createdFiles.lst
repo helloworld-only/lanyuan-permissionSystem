@@ -1,0 +1,4 @@
+com\authSys\controller\CaptchaController.class
+com\authSys\config\SimpleCorsFilter.class
+com\authSys\controller\LoginController.class
+com\authSys\controller\UserController.class

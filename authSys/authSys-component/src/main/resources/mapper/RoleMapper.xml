@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.authSys.mapper.RoleMapper">
+    <resultMap id="baseResultMap" type="com.authSys.entity.RoleEntity">
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+    </resultMap>
+
+    <insert id="insertRole">
+        insert into t_role(role_name) values(#{roleName})
+    </insert>
+
+    <delete id="deleteById">
+        delete from t_role where role_id = #{roleId}
+    </delete>
+
+    <update id="updateRole">
+        update t_role
+        <set>
+            <if test="role.roleName != null">
+                role_name = #{role.roleName}
+            </if>
+        </set>
+        where role_id = #{role.roleId}
+    </update>
+
+    <select id="selectAll" resultMap="baseResultMap">
+        select user_id, acct, passwd, user_name from t_user
+    </select>
+
+    <select id="selectById" resultMap="baseResultMap">
+        select role_id, role_name from t_role where role_id = #{roleId}
+    </select>
+
+    <select id="selectByIds" resultMap="baseResultMap">
+        select role_id, role_name from t_role where role_id in(
+        <foreach collection="ids" item="id">
+            #{id},
+        </foreach>
+        )
+    </select>
+
+</mapper>

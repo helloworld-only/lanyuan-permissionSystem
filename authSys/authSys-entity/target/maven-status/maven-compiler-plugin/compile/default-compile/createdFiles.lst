@@ -1,0 +1,7 @@
+com\authSys\entity\RoleAuthEntity.class
+com\authSys\entity\AuthEntity.class
+com\authSys\entity\UserEntity.class
+com\authSys\domain\ResponseResult.class
+com\authSys\entity\RoleEntity.class
+com\authSys\entity\UserRoleEntity.class
+com\authSys\domain\HttpStatus.class
