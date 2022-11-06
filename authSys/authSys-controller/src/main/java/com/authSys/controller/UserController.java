@@ -17,23 +17,36 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/home/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
 
-    @RequestMapping("/home/user/display")
+    @RequestMapping("")
     @ResponseBody
     public List<UserEntity> getAllUsers(){
         List<UserEntity> allUsers = userService.getAllUsers();
         return allUsers;
     }
 
-    @RequestMapping("/user/{id}")
+    @RequestMapping("/get/{id}")
     @ResponseBody
     public UserEntity getUserEntityById(@PathVariable("id") Integer id){
         UserEntity user = userService.getById(id);
         return user;
+    }
+
+    @RequestMapping("/delete/{id}")
+    public ResponseResult deleteUserById(@PathVariable("id") Integer id){
+        int i = userService.removeById(id);
+        return ResponseResult.success("删除成功");
+    }
+
+    @RequestMapping("/update")
+    public ResponseResult updateUserInfo(UserEntity user){
+        int i = userService.updateUser(user);
+        return ResponseResult.success("更新成功");
     }
 }

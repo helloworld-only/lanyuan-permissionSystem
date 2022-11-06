@@ -41,12 +41,73 @@
 
   > ```js
   > this.$router.push({
-  >     path:'/home'
-  >     // name: 'home'
+  >  path:'/home'
+  >  // name: 'home'
   > })
   > ```
   >
   > 把 name: 'home' 这一属性去掉即可
+
+
+
+## 5. Vue项目中使用多个router-view
+
+>  1.  为每个router-view设置那么属性
+>
+>      >  ```vue
+>      >  <!-- 组件1中的router-view -->
+>      >  <router-view name="appRouterView"></router-view>
+>      >  ```
+>      >
+>      >  ```vue
+>      >  <!-- 组件2中的router-view -->
+>      >  <router-view name="homeRouterView"></router-view>
+>      >  ```
+>
+>  2.  将`src/router/index.js`中的路由映射中的component改为components
+>
+>      >  ```js
+>      >  const router = new VueRouter({
+>      >      mode:'history',
+>      >      routes : [
+>      >          {
+>      >              path:'/',
+>      >              redirect:'/login'
+>      >          },
+>      >          {
+>      >              path:'/login',
+>      >              components: {
+>      >                  appRouterView: LoginPage
+>      >              }
+>      >          },
+>      >          {
+>      >              path:'/home',
+>      >              components:{
+>      >                  appRouterView: Home,
+>      >              },    
+>      >              children:[
+>      >                  {
+>      >                      path: 'user/display',
+>      >                      components: {
+>      >                          homeRouterView: UserDisplay,
+>      >                      }
+>      >                  }
+>      >              ]
+>      >          }
+>      >      ]
+>      >  })
+>      >  
+>      >  export default router;
+>      >  ```
+>      >
+
+
+
+
+
+## 6. js处理对象数组
+
+
 
 # 二.后端
 
@@ -139,4 +200,8 @@
 > 访问地址为：http://localhost/home/user/display，结果404
 >
 > 如果直接使用 @RequestMapping("/home/user/display")，则能正常访问到
+
+*  正确做法
+
+   >  在类上添加@RequestMapping("/home/user")，而不是设置Controller注解的属性值
 

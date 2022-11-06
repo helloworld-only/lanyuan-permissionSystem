@@ -15,27 +15,27 @@
 
     <mvc:annotation-driven/>
 
-    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
-        <!--设置当前视图解析器的优先级（也就是说可配置多个视图解析器）-->
-        <property name="order" value="1"></property>
-        <property name="characterEncoding" value="UTF-8"></property>
-        <property name="templateEngine">
-            <bean class="org.thymeleaf.spring5.SpringTemplateEngine">
-                <property name="templateResolver">
-                    <bean class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
-                        <!-- 视图前缀-->
-                        <property name="prefix" value="/WEB-INF/templates/"></property>
-                        <!-- 视图后缀-->
-                        <property name="suffix" value=".html"></property>
-                        <property name="templateMode" value="HTML5"></property>
-                        <property name="characterEncoding" value="UTF-8"></property>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-    </bean>
+<!--    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">-->
+<!--        &lt;!&ndash;设置当前视图解析器的优先级（也就是说可配置多个视图解析器）&ndash;&gt;-->
+<!--        <property name="order" value="1"></property>-->
+<!--        <property name="characterEncoding" value="UTF-8"></property>-->
+<!--        <property name="templateEngine">-->
+<!--            <bean class="org.thymeleaf.spring5.SpringTemplateEngine">-->
+<!--                <property name="templateResolver">-->
+<!--                    <bean class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">-->
+<!--                        &lt;!&ndash; 视图前缀&ndash;&gt;-->
+<!--                        <property name="prefix" value="/WEB-INF/templates/"></property>-->
+<!--                        &lt;!&ndash; 视图后缀&ndash;&gt;-->
+<!--                        <property name="suffix" value=".html"></property>-->
+<!--                        <property name="templateMode" value="HTML5"></property>-->
+<!--                        <property name="characterEncoding" value="UTF-8"></property>-->
+<!--                    </bean>-->
+<!--                </property>-->
+<!--            </bean>-->
+<!--        </property>-->
+<!--    </bean>-->
 
-    <mvc:default-servlet-handler/>
+<!--    <mvc:default-servlet-handler/>-->
 
     <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="exceptionMappings">

@@ -34,6 +34,15 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <filter>
+    <filter-name>simpleCorsFilter</filter-name>
+    <filter-class>com.authSys.config.SimpleCorsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>simpleCorsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
   <!-- 由于servlet是在第一次访问的时候才会创建，而DispatcherServlet初始化需要花费大量时间，所以需要DispatcherServlet在启动的时候就初始化-->
   <servlet>
     <servlet-name>dispatcherServlet</servlet-name>

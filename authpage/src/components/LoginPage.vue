@@ -149,7 +149,7 @@ export default {
         if(res.data.code === 200){
           console.log(res.data.msg);
           this.$router.push({
-            path:'/home'
+            path:'/home',
           })
         }else{
           this.getVerifyCode();

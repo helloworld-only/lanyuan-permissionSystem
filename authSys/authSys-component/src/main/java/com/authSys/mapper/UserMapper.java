@@ -12,7 +12,7 @@ public interface UserMapper {
 
     int deleteById(Integer id);
 
-    int updateUser(UserEntity user);
+    int updateUser(UserEntity userEntity);
 
     List<UserEntity> selectAll();
 

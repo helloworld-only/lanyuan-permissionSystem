@@ -1,7 +1,10 @@
 <template>
     
     <div>
-        <UserDisplay></UserDisplay>
+        <router-link class="list-group-item" active-class="" to="/home/user">用户管理</router-link>
+        <br/>
+        <router-link class="list-group-item" active-class="" to="/home/user/add">用户添加</router-link>
+        <router-view name="homeRouterView"/>
     </div>
 </template>
 
@@ -17,8 +20,6 @@ export default {
             s : 'Hello world',
         }
     },
-    mounted(){
-        console.log('挂载完成');
-    }
+    
 }
 </script>
