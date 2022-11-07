@@ -109,9 +109,36 @@
 
 
 
-## 7.当前地址在子路由，点击导航栏返回父路由（也就是当前路由的上一级），无法正常显示父路由的数据
+## 7_1.当前地址在子路由，点击导航栏返回父路由（也就是当前路由的上一级），无法正常显示父路由的数据
 
 
+
+## 7_2.子路由页面覆盖父路由页面问题
+
+>  
+
+
+
+## 8. 一个对象要和对象数组中的某一个对象的内容相同，在不影响对象数组的情况下，给该对象赋值并修改其内容
+
+>  现有一个对象 `formData={}`，一个对象数组 `tableData=[{"id":1},{"id":2}]`，要保证 formData 的内容与tableData中的某一个对象的内容相同，这里假设是第0个。
+>
+>  如果直接进行赋值，`formData = tableData[0]` ，现执行 `formData.id = 3`，结果tableData变为[{"id":3},{"id":2}]。
+>
+>  要在改变formData时，不改变tableData，所以不能直接赋值。
+
+*  解决方案
+
+   >  将要用于赋值的对象字符串化 -> 在将该字符串对象化 -> 赋值
+   >
+   >  ```js
+   >  var formData = {};
+   >  var tableData = [{"id":1},{"id":2}];
+   >  var stringifyData = JSON.stringify(tableData[0]);
+   >  formData = JSON.parse(stringifyData);
+   >  ```
+   >
+   >  
 
 
 

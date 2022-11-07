@@ -20,6 +20,7 @@
       >删除</el-button>
     </el-col>
   </el-row>
+
   <el-table :data="tableData" :stripe="true" style="width:100">
     <el-table-column type="selection" width="50" align="center" />
     <el-table-column key="userId" prop="userId" align="center" label="用户编号"></el-table-column>
@@ -127,7 +128,14 @@ export default {
 
     // 弹出更新数据的弹出层
     handleUpdate(row){
-      this.formData = row; //不能这样写，不然tableData中的对象和formData对象所指的是同一个，即使后续修改失败也会影响tableData中的数据
+      console.log(row);
+      // this.formData = row; //不能这样写，不然tableData中的对象和formData对象所指的是同一个，即使后续修改失败也会影响tableData中的数据
+
+      const stringifyRow = JSON.stringify(row);
+      console.log(stringifyRow);
+      this.formData = JSON.parse(stringifyRow);
+      
+      // this.formData = JSON.parse(stringifyRow);
       // for(let key in row){
       //   this.formData[key] = row[key];
       // }
@@ -180,7 +188,7 @@ export default {
         method:'post',
         data:qs.stringify(this.formData),
       }).then(res => {
-        console.log(this.formData.userId)
+        // 后端更新成功后，前端展示数据通过前端更新，就不重新请求后端了
         if(res.data.code === 200){
           this.tableData = this.tableData.filter(item => {
             if (this.formData.userId == item.userId){

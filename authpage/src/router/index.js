@@ -21,23 +21,27 @@ const router = new VueRouter({
             path:'/',
             redirect:'/login'
         },
+
         {
             path:'/login',
             components: {
                 appRouterView: LoginPage
             }
         },
+
         {
             path:'/home',
             components:{
                 appRouterView: Home,
-            },    
+            },   
+
             children:[
                 {
                     path: 'user',
                     components: {
                         homeRouterView: UserDisplay,
                     },
+
                     children:[
                         {
                             path: 'roleDistribution',
@@ -47,12 +51,14 @@ const router = new VueRouter({
                         }
                     ]
                 },
+
                 {
                     path: 'role',
                     components: {
                         homeRouterView: RoleDisplay
                     }
                 },
+                
                 {
                     path: 'auth',
                     components: {
