@@ -109,6 +109,12 @@
 
 
 
+## 7.当前地址在子路由，点击导航栏返回父路由（也就是当前路由的上一级），无法正常显示父路由的数据
+
+
+
+
+
 # 二.后端
 
 ## 1. 在spring配置文件中引入jdbc.properties文件
@@ -205,3 +211,38 @@
 
    >  在类上添加@RequestMapping("/home/user")，而不是设置Controller注解的属性值
 
+
+
+## 7. mybatis的insert问题
+
+> mybatis的mapper接口和mapper文件均配置正确，且日志已打印：`DEBUG com.authSys.mapper.UserMapper.insertUser - ==>  Preparing: insert into t_user(acct, passwd, user_name) values(?,?,?);`，
+>
+> 却未打印：`DEBUG com.authSys.mapper.UserMapper.insertUser - ==> Parameters: 11111111(String), 11111(String), 111(String)`
+> `DEBUG com.authSys.mapper.UserMapper.insertUser - <==    Updates: 1`
+
+* 临时解决方案
+
+  > ```xml
+  > <!-- 原映射文件写法（无法正常执行）-->
+  > <insert id="insertUser" parameterType="com.authSys.entity.UserEntity">
+  >     insert into t_user(acct, passwd, user_name)
+  >     values(#{acct},#{passwd},#{userName});
+  > </insert>
+  > ```
+
+  > ```xml
+  > <!-- 改正后写法（可正常执行） -->
+  > <insert id="insertUser" parameterType="com.authSys.entity.UserEntity" 
+  >         useGeneratedKeys="true"
+  >         keyColumn="user_id"
+  >         keyProperty="userId">
+  >     insert into t_user(acct, passwd, user_name)
+  >     values(#{acct,jdbcType=CHAR},#{passwd, jdbcType=CHAR},#{userName,jdbcType=CHAR});
+  > </insert>
+  > ```
+
+
+
+## 8. mybatis的update问题
+
+> 与insert问题不同的是，update时，打印了创建sqlSession相关日志，接着就直接打印关闭sqlSession相关日志。

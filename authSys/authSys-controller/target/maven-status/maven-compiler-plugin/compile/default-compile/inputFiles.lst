@@ -1,4 +1,6 @@
-D:\dev\authSys\authSys-controller\src\main\java\com\authSys\config\SimpleCorsFilter.java
-D:\dev\authSys\authSys-controller\src\main\java\com\authSys\controller\LoginController.java
-D:\dev\authSys\authSys-controller\src\main\java\com\authSys\controller\UserController.java
-D:\dev\authSys\authSys-controller\src\main\java\com\authSys\controller\CaptchaController.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-controller\src\main\java\com\authSys\controller\AuthController.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-controller\src\main\java\com\authSys\config\SimpleCorsFilter.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-controller\src\main\java\com\authSys\controller\LoginController.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-controller\src\main\java\com\authSys\controller\CaptchaController.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-controller\src\main\java\com\authSys\controller\RoleController.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-controller\src\main\java\com\authSys\controller\UserController.java

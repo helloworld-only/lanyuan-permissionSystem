@@ -1,6 +1,8 @@
 com\authSys\mapper\AuthMapper.class
+com\authSys\service\AuthService.class
+com\authSys\mapper\UserRoleMapper.class
+com\authSys\test\Client.class
 com\authSys\service\UserService.class
 com\authSys\mapper\UserMapper.class
-com\authSys\mapper\UserRoleMapper.class
+com\authSys\service\RoleService.class
 com\authSys\mapper\RoleMapper.class
-com\authSys\test\Client.class

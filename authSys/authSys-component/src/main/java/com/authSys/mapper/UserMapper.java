@@ -8,7 +8,11 @@ import java.util.List;
 
 public interface UserMapper {
 
-    int insertUser(UserEntity user);
+    int insertUser(UserEntity userEntity);
+
+//    int insertUser(@Param("acct") String acct, @Param("passwd") String passwd, @Param("userName") String userName);
+
+//    int insertUser();
 
     int deleteById(Integer id);
 

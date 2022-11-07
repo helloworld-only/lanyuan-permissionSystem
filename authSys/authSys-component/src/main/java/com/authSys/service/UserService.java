@@ -6,6 +6,7 @@ import com.authSys.mapper.UserMapper;
 import com.authSys.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,8 +21,10 @@ public class UserService {
 
 
 
-    public int saveUser(UserEntity user){
-        int affectedRow = userMapper.insertUser(user);
+    public int saveUser(UserEntity userEntity){
+        int affectedRow = userMapper.insertUser(userEntity);
+//        int affectedRow = userMapper.insertUser(userEntity.getAcct(),userEntity.getPasswd(),userEntity.getUserName());
+//        int affectedRow = userMapper.insertUser();
         return affectedRow;
     }
 
@@ -30,8 +33,8 @@ public class UserService {
         return affectedRow;
     }
 
-    public int updateUser(UserEntity user){
-        int affectedRow = userMapper.updateUser(user);
+    public int updateUser(UserEntity userEntity){
+        int affectedRow = userMapper.updateUser(userEntity);
         return affectedRow;
     }
 

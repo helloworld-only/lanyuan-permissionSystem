@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.authSys.mapper.AuthMapper">
+    <resultMap id="baseResultMap" type="com.authSys.entity.AuthEntity">
+        <id column="auth_id" property="authId"/>
+        <result column="auth_name" property="authName"/>
+    </resultMap>
+
+    <insert id="insertAuth" parameterType="com.authSys.entity.AuthEntity"
+            useGeneratedKeys="true" keyColumn="auth_id" keyProperty="authId">
+        insert into t_auth(auth_name) values(#{authName})
+    </insert>
+
+    <delete id="deleteById">
+        delete from t_auth where auth_id = #{authId}
+    </delete>
+
+    <select id="selectAll" resultMap="baseResultMap">
+        select auth_id,auth_name from t_auth
+    </select>
+
+    <select id="selectById" resultMap="baseResultMap">
+        select auth_id, auth_name from t_auth where auth_id = #{authId}
+    </select>
+
+    <select id="selectByIds" resultMap="baseResultMap">
+        select auth_id, auth_name from t_auth where auth_id in(
+        <foreach collection="ids" item="id">
+            #{id},
+        </foreach>
+        )
+    </select>
+
+</mapper>

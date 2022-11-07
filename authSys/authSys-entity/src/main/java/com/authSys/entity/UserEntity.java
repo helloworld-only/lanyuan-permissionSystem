@@ -43,8 +43,8 @@ public class UserEntity {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + userId +
+        return "UserEntity{" +
+                "userId=" + userId +
                 ", acct='" + acct + '\'' +
                 ", passwd='" + passwd + '\'' +
                 ", userName='" + userName + '\'' +

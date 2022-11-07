@@ -3,7 +3,9 @@ import LoginPage from '@/components/LoginPage'
 import Home from '@/components/Home'
 import UserDisplay from '../components/user/UserDisplay'
 import Vue from 'vue'
-import UserAdd from '../components/user/UserAdd'
+import RoleDisplay from '../components/role/RoleDisplay'
+import AuthDisplay from '../components/auth/AuthDisplay'
+import RoleDistribution from '../components/user/RoleDistribution'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -35,6 +37,26 @@ const router = new VueRouter({
                     path: 'user',
                     components: {
                         homeRouterView: UserDisplay,
+                    },
+                    children:[
+                        {
+                            path: 'roleDistribution',
+                            components: {
+                                homeRouterView: RoleDistribution
+                            }
+                        }
+                    ]
+                },
+                {
+                    path: 'role',
+                    components: {
+                        homeRouterView: RoleDisplay
+                    }
+                },
+                {
+                    path: 'auth',
+                    components: {
+                        homeRouterView: AuthDisplay
                     }
                 },
             ]

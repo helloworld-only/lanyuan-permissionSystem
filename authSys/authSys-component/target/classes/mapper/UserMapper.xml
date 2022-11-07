@@ -10,26 +10,33 @@
         <result column="user_name" property="userName"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.authSys.entity.UserEntity">
+<!--   ${acct}, ${passwd}, ${user_name}
+useGeneratedKeys="true"
+            keyColumn="user_id"
+            keyProperty="userId"
+-->
+    <insert id="insertUser" parameterType="com.authSys.entity.UserEntity" useGeneratedKeys="true"
+            keyColumn="user_id"
+            keyProperty="userId">
         insert into t_user(acct, passwd, user_name)
-        values(#{user.acct}, #{user.passwd}, #{user.userName});
+        values(#{acct,jdbcType=CHAR},#{passwd, jdbcType=CHAR},#{userName,jdbcType=CHAR});
     </insert>
 
     <delete id="deleteById" parameterType="java.lang.Integer">
         delete from t_user where user_id = #{userId};
     </delete>
 
-    <update id="updateUser" parameterType="com.authSys.entity.UserEntity" >
+    <update id="updateUser" parameterType="com.authSys.entity.UserEntity">
         update t_user
         <set>
-            <if test="userEntity.passwd != null">
-                passwd = #{userEntity.passwd},
+            <if test="passwd != null">
+                passwd = #{passwd},
             </if>
-            <if test="user.userName != null">
-                user_name = #{userEntity.userName}
+            <if test="userName != null">
+                user_name = #{userName}
             </if>
         </set>
-        where user_id = #{userEntity.userId}
+        where user_id = #{userId};
     </update>
 
     <select id="selectAll" resultMap="baseResultMap">

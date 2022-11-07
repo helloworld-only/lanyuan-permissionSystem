@@ -31,6 +31,12 @@ public class UserController {
         return allUsers;
     }
 
+    @RequestMapping("/add")
+    public ResponseResult addUser(UserEntity userEntity){
+        int i = userService.saveUser(userEntity);
+        return ResponseResult.success(userEntity);
+    }
+
     @RequestMapping("/get/{id}")
     @ResponseBody
     public UserEntity getUserEntityById(@PathVariable("id") Integer id){
@@ -45,8 +51,8 @@ public class UserController {
     }
 
     @RequestMapping("/update")
-    public ResponseResult updateUserInfo(UserEntity user){
-        int i = userService.updateUser(user);
+    public ResponseResult updateUserInfo(UserEntity userEntity){
+        int i = userService.updateUser(userEntity);
         return ResponseResult.success("更新成功");
     }
 }

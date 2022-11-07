@@ -7,7 +7,8 @@
         <result column="role_name" property="roleName"/>
     </resultMap>
 
-    <insert id="insertRole">
+    <insert id="insertRole" parameterType="com.authSys.entity.RoleEntity"
+            useGeneratedKeys="true" keyColumn="role_id" keyProperty="roleId">
         insert into t_role(role_name) values(#{roleName})
     </insert>
 
@@ -26,7 +27,7 @@
     </update>
 
     <select id="selectAll" resultMap="baseResultMap">
-        select user_id, acct, passwd, user_name from t_user
+        select role_id,role_name from t_role
     </select>
 
     <select id="selectById" resultMap="baseResultMap">

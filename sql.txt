@@ -9,11 +9,20 @@ create table t_user(user_id int primary key auto_increment,
 										user_name varchar(10));
 										
 insert into t_user(acct, passwd, user_name) values ('20221102','123','admin');
+insert into t_user(acct, passwd, user_name) values('20221107','123','guest');
+
+select * from t_user;
 
 
 drop table if exists t_role;
 create table t_role(role_id int primary key auto_increment,
 										role_name varchar(10) unique not null);
+										
+select * from t_role;
+										
+insert into t_role(role_name) values('admin');
+insert into t_role(role_name) values('guest');
+
 
 
 										
@@ -31,6 +40,15 @@ alter table user_role add foreign key(role_id) references t_role(role_id);
 drop table if exists t_auth;
 create table t_auth(auth_id int primary key auto_increment,
 										auth_name varchar(10) unique not null);
+										
+select * from t_auth;
+
+insert into t_auth(auth_name) values('Login');
+insert into t_auth(auth_name) values('Insert');
+insert into t_auth(auth_name) values('Delete');
+insert into t_auth(auth_name) values('Update');
+insert into t_auth(auth_name) values('Select');
+
 										
 
 
