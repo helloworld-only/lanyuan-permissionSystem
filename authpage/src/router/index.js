@@ -6,6 +6,7 @@ import Vue from 'vue'
 import RoleDisplay from '../components/role/RoleDisplay'
 import AuthDisplay from '../components/auth/AuthDisplay'
 import RoleDistribution from '../components/user/RoleDistribution'
+import AuthDistribution from '../components/role/AuthDistribution'
 Vue.use(VueRouter)
 
 const originalPush = VueRouter.prototype.push
@@ -42,14 +43,30 @@ const router = new VueRouter({
                         homeRouterView: UserDisplay,
                     },
 
-                    children:[
-                        {
-                            path: 'roleDistribution',
-                            components: {
-                                homeRouterView: RoleDistribution
-                            }
-                        }
-                    ]
+                    // component:{
+                    //     render(c){
+                    //         return c('homeRouterView')
+                    //     }
+                    // },
+
+                    // redirect:'/home/user/roleDistribution',
+
+                    // children:[
+                    //     {
+                    //         path: 'roleDistribution',
+                    //         components: {
+                    //             homeRouterView: RoleDistribution
+                    //         }
+                    //     }
+                    // ]
+                },
+
+                {
+                    path: 'user/:userId/roleDistribution',
+                    components: {
+                        homeRouterView: RoleDistribution
+                    },
+                    props: true,
                 },
 
                 {
@@ -58,6 +75,13 @@ const router = new VueRouter({
                         homeRouterView: RoleDisplay
                     }
                 },
+                {
+                    path: 'role/:roleId/authDistribution',
+                    components:{
+                        homeRouterView:AuthDistribution
+                    },
+                    props: true,
+                },
                 
                 {
                     path: 'auth',
@@ -65,9 +89,11 @@ const router = new VueRouter({
                         homeRouterView: AuthDisplay
                     }
                 },
+
             ]
         }
-    ]
+    ],
+    
 })
 
 export default router;

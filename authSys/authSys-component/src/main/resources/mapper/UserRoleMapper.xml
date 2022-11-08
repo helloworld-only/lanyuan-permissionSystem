@@ -8,16 +8,37 @@
         <result column="role_id" property="roleId"/>
     </resultMap>
 
-    <insert id="insertOne">
-        insert into user_role(user_id, role_id) values(#{userRoleEntity.userId}, #{userRoleENtity.roleId})
+    <resultMap id="baseViewResultMap" type="com.authSys.entity.UserRoleEntity">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+    </resultMap>
+
+    <insert id="insertUserRoles" parameterType="com.authSys.entity.UserRoleEntity"
+            useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+
+        insert into user_role(user_id, role_id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId}, #{item.roleId})
+        </foreach>
+        ;
     </insert>
 
     <delete id="deleteById">
         delete from user_role where id = #{id}
     </delete>
 
+    <delete id="deleteByUserId">
+        delete from user_role where user_id = #{userId}
+    </delete>
+
     <select id="selectByUserId" resultMap="baseResultMap">
         select id, user_id, role_id from user_role where user_id = #{userId}
+    </select>
+
+    <select id="selectViewByUserId" resultMap="baseViewResultMap">
+        select id, user_id, role_id, role_name from user_role_view where user_id = #{userId}
     </select>
 
     <select id="selectByUserIds" resultMap="baseResultMap">

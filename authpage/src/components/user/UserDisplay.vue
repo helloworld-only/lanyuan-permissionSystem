@@ -238,7 +238,10 @@ export default {
 
     toRoleDistribution(row){
       const path = this.$route.path;
-      this.$router.push(path+'/roleDistribution');
+      this.$router.push(path + '/' + row.userId + '/roleDistribution'); // '/' + row.userId +
+
+      // 向当前模块所共享的数据赋值
+      this.$store.state.userDisplayVueShare.userInfo=row;
     },
 
   }

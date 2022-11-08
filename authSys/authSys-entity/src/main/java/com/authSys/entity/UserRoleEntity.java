@@ -5,6 +5,8 @@ public class UserRoleEntity {
     private Integer userId;
     private Integer roleId;
 
+    private String roleName;
+
     public UserRoleEntity() {
     }
 
@@ -32,12 +34,21 @@ public class UserRoleEntity {
         this.roleId = roleId;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     @Override
     public String toString() {
         return "UserRoleEntity{" +
                 "id=" + id +
                 ", userId=" + userId +
                 ", roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

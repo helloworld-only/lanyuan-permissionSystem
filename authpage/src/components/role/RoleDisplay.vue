@@ -37,6 +37,13 @@
                     @click="handleDelete(scope.row)"
                     
                 >删除</el-button>
+
+                <el-button
+                    size="mini"
+                    type="text"
+                    icon="el-icon-setting"
+                    @click="toAuthDistribution(scope.row)"
+                >权限分配</el-button>
             </template>
         </el-table-column>
     </el-table> 
@@ -187,6 +194,11 @@ export default {
                 this.$message.info('取消删除成功')
             })  
         },
+
+        toAuthDistribution(row){
+            const path = this.$route.path;
+            this.$router.push(path + '/' + row.roleId + '/authDistribution'); 
+        }
 
     }
 };

@@ -107,6 +107,45 @@
 
 ## 6. js处理对象数组
 
+* **根据对象中的某个属性排序**
+
+  > ```js
+  > const tableData = [{"id":1},{"id":2}];
+  > const sortKey = "id"; 
+  > 
+  > // x和y就是tableData中的两个元素
+  > tableData = tableData.sort((x,y)->{
+  >     return x[sortKey] - y[sortKey]
+  > })
+  > ```
+
+* **修改对象数组**
+
+  > ```js
+  > const tableData = [{"id":1},{"id":2}];
+  > 
+  > // 1. item就是数组中的一个元素
+  > // 2. 如果返回true，就保留该元素，返回false，就不保留该元素
+  > tableData = tableData.filter(item->{
+  >     return true;
+  > })
+  > 
+  > /* filter是一个很灵活的函数，
+  > 1. 可以都返回true，然后修改item，就实现了修改对象数组中对象的数据
+  > 2. 可以根据item对象中的值确定是返回true还是false，就实现了排除对象数组中不符合条件的对象
+  > ...
+  > ```
+
+* **向数组中添加数据**
+
+  > ```js
+  > const tableData = [{"id":1},{"id":2}];
+  > 
+  > tableData.push({"id":3});
+  > ```
+  >
+  > 
+
 
 
 ## 7_1.当前地址在子路由，点击导航栏返回父路由（也就是当前路由的上一级），无法正常显示父路由的数据
@@ -116,6 +155,10 @@
 ## 7_2.子路由页面覆盖父路由页面问题
 
 >  
+
+
+
+## 7_3. 多个router-view的情况下，三级路由怎么覆盖二级路由
 
 
 
@@ -138,9 +181,24 @@
    >  formData = JSON.parse(stringifyData);
    >  ```
    >
-   >  
 
 
+
+## 9.一个组件通过事件响应函数向另一个组件传递数据
+
+
+
+## 10. vuex的使用
+
+
+
+## 11. VueRouter的路径参数问题
+
+> 比如说，路由中有：/home/user/:userId/roleDistribution
+>
+> 这个userId就是路径参数，和SpringMVC中的 `@RequestMapping("/user/{userId}")` userId有异曲同工之妙。
+>
+> 获取这个路径参数的值：**`vue实例.$route.params.userId`**（如果在vue实例中使用就是：this.$route.params.userId）
 
 # 二.后端
 
