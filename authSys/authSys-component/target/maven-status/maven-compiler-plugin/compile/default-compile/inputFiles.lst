@@ -1,7 +1,9 @@
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\mapper\UserRoleMapper.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\mapper\RoleAuthMapper.java
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\test\Client.java
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\service\AuthService.java
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\mapper\AuthMapper.java
+D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\service\RoleAuthService.java
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\service\UserService.java
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\service\RoleService.java
 D:\Code\dev\lanyuan-permissionSystem\authSys\authSys-component\src\main\java\com\authSys\service\UserRoleService.java

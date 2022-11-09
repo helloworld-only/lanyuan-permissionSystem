@@ -69,7 +69,7 @@ export default {
             ],
 
 
-            allAuths:[], // 所有的角色
+            allAuths:[], // 所有的权限
 
             unDistributedAuths:[], // 未被分配给该用户的角色
 
@@ -113,14 +113,14 @@ export default {
         // 弹出添加数据的弹出层
         handleAdd(){
             this.layerOpen=true;
-            this.layerTitle='角色分配';
+            this.layerTitle='权限分配';
 
-            const distributedAuthId = []; // 已分配给该用户的角色的角色id
+            const distributedAuthId = []; // 已分配给该角色的权限的权限id
             this.tableData.forEach(function(item){
                 distributedAuthId.push(item['authId'])
             });
 
-            // 判断该用户是否有所有的角色
+            // 判断该角色是否有所有的权限
             if(distributedAuthId.length === this.allAuths.length){
                 this.unDistributedAuths = [];
             }else{
@@ -137,13 +137,30 @@ export default {
         // 提交添加数据的表单
         submitAddForm(){
             axios({
-                url:'http://localhost/home/role/' + this.$route.params.roleId + '/roleDistribution/add',
+                url:'http://localhost/home/role/' + this.$route.params.roleId + '/authDistribution/add',
                 // url:'http://localhost' + this.$router.path + '/add',
                 method:'post',
                 data:this.checkedAuthId,
             }).then(res => {
                 if(res.data.code === 200){
-                    this.getAllAuthByRoleId()
+
+                    
+                    let resData = res.data.data;
+                    resData.forEach(item=>{
+                        let authId = item['authId'];
+                        for(let obj of this.allAuths){
+                            if(obj['authId'] === authId){
+                                console.log(obj['authId'])
+                                item['authName'] = obj['authName'];
+                                console.log(item['authName'])
+                                break;
+                            }
+                        }
+                        this.tableData.push(item);
+                    });
+                    
+                    // 后端会把插入成功后的数据返回前端，所以可以通过前端实现更新表格，就不需要再访问后端来更新表格了
+                    // this.getAllAuthByRoleId()
                     this.$message.success('添加成功');
                 }
             }).catch(err=>{

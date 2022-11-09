@@ -12,6 +12,8 @@ public interface UserRoleMapper {
 
     int deleteByUserId(Integer userId);
 
+    int deleteByRoleId(Integer roleId);
+
     List<UserRoleEntity> selectAll();
 
     List<UserRoleEntity> selectByUserId(Integer userId);

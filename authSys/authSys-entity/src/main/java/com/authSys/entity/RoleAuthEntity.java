@@ -5,6 +5,8 @@ public class RoleAuthEntity {
     private Integer roleId;
     private Integer authId;
 
+    private String authName;
+
     public RoleAuthEntity() {
     }
 
@@ -32,12 +34,21 @@ public class RoleAuthEntity {
         this.authId = authId;
     }
 
+    public String getAuthName() {
+        return authName;
+    }
+
+    public void setAuthName(String authName) {
+        this.authName = authName;
+    }
+
     @Override
     public String toString() {
         return "RoleAuthEntity{" +
                 "id=" + id +
                 ", roleId=" + roleId +
                 ", authId=" + authId +
+                ", authName='" + authName + '\'' +
                 '}';
     }
 }

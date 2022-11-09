@@ -200,6 +200,12 @@
 >
 > 获取这个路径参数的值：**`vue实例.$route.params.userId`**（如果在vue实例中使用就是：this.$route.params.userId）
 
+
+
+## 12.前端得到token并保存至cookie或localStorage
+
+> 
+
 # 二.后端
 
 ## 1. 在spring配置文件中引入jdbc.properties文件
@@ -331,3 +337,18 @@
 ## 8. mybatis的update问题
 
 > 与insert问题不同的是，update时，打印了创建sqlSession相关日志，接着就直接打印关闭sqlSession相关日志。
+
+
+
+## 9. SpringMVC接收数组问题
+
+
+
+
+
+# 三. 不了解的技术
+
+## 1. jwt
+
+
+

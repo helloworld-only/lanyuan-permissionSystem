@@ -19,13 +19,19 @@ public class SimpleCorsFilter implements Filter {
 
         HttpServletResponse response=(HttpServletResponse) servletResponse;
 
-        response.setHeader("Access-Control-Allow-Origin", "*");
+//        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        // 设置了axios请求时带上cookie的话，就不能设置为 * 。
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials","true");//是否支持cookie跨域
 
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 
         response.setHeader("Access-Control-Allow-Headers","Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With,userId,token");
 
         response.setHeader("Access-Control-Max-Age", "0");
+
+//        response.setHeader("XDomainRequestAllowed", "1");
 
         filterChain.doFilter(servletRequest, servletResponse);
 

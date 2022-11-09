@@ -1,0 +1,17 @@
+
+第一次请求服务器(请求图片验证码)：
+	http://localhost/captchaImg  -> Set-Cookie: JSESSIONID=2BC0AD3BF7A19A19501F8A42DC803721; Path=/; HttpOnly
+		（服务器中打印的sessionId：2BC0AD3BF7A19A19501F8A42DC803721）
+
+第二次请求服务器(登录验证，验证账号、密码、验证码是否都正确)：
+	http://localhost/home -> Set-Cookie: JSESSIONID=59D44B92F9DDD47EB4A0CA94A1E0A7B8; Path=/; HttpOnly
+		（服务器中打印的sessionId：59D44B92F9DDD47EB4A0CA94A1E0A7B8）
+
+
+重新请求登录页面(请求图片验证码)：
+第三次请求服务器：
+	http://localhost/captchaImg(Cookie: JSESSIONID=59D44B92F9DDD47EB4A0CA94A1E0A7B8)
+		(服务器未发送Set-Cookie字段）（服务器中打印的sessionId：45B1CF3544DF0CD7AF348651AF8DC08F）
+
+	http://localhost/home（Cookie: JSESSIONID=59D44B92F9DDD47EB4A0CA94A1E0A7B8）
+		(服务器未发送Set-Cookie字段）（服务器中打印的sessionId：59D44B92F9DDD47EB4A0CA94A1E0A7B8）

@@ -128,6 +128,10 @@ export default {
       xhr.onload = function(){
         if(this.response.code === 200){
           that.imgCode=this.response.data.code;
+
+          const token = this.response.token;
+
+          window.localStorage.setItem('token',token);
         }
       }
       xhr.send();
@@ -147,18 +151,16 @@ export default {
       .then(res => {
         console.log(res);
         if(res.data.code === 200){
-          console.log(res.data.msg);
+          window.localStorage.setItem('token',res.data.token) // 保存token
           this.$router.push({
             path:'/home',
           })
         }else{
-          this.getVerifyCode();
-          console.log(res.data.msg);
-          // 弹出层，提示错误类型
+          this.getVerifyCode();//重新获取验证码
+          this.$message.error(res.data.msg); // 错误提示
         }
       })
       .catch(error => {
-        console.log(error)
         this.getVerifyCode()
       }) 
       .finally(()=>{

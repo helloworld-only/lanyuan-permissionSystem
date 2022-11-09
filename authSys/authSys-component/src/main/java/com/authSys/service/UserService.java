@@ -20,22 +20,22 @@ public class UserService {
     private UserRoleMapper userRoleMapper;
 
 
-
+    @Transactional
     public int saveUser(UserEntity userEntity){
         int affectedRow = userMapper.insertUser(userEntity);
-//        int affectedRow = userMapper.insertUser(userEntity.getAcct(),userEntity.getPasswd(),userEntity.getUserName());
-//        int affectedRow = userMapper.insertUser();
         return affectedRow;
     }
 
+    @Transactional
     public int removeById(Integer id){
-        int affectedRow = userMapper.deleteById(id);
-        return affectedRow;
+        int i = userRoleMapper.deleteByUserId(id); // 先删除 用户-角色表 中涉及该用户的行
+        int affectedRows = userMapper.deleteById(id); // 最后删除该用户
+        return affectedRows;
     }
 
     public int updateUser(UserEntity userEntity){
-        int affectedRow = userMapper.updateUser(userEntity);
-        return affectedRow;
+        int affectedRows = userMapper.updateUser(userEntity);
+        return affectedRows;
     }
 
     public List<UserEntity> getAllUsers(){

@@ -70,3 +70,11 @@ CREATE TABLE role_auth(id INT PRIMARY KEY AUTO_INCREMENT,
 		auth_id INT NOT NULL,
 		FOREIGN KEY(role_id) REFERENCES t_role(role_id),
 		FOREIGN KEY(auth_id) REFERENCES t_auth(auth_id));
+
+
+create view role_auth_view as
+(select role_auth.id, role_auth.role_id, t_auth.auth_id, t_auth.auth_name
+from role_auth,t_auth
+where role_auth.auth_id = t_auth.auth_id)
+
+select * from role_auth_view;

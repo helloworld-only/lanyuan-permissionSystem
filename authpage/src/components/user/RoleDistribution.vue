@@ -149,7 +149,19 @@ export default {
                 data:this.checkedRoleId,
             }).then(res => {
                 if(res.data.code === 200){
-                    this.getAllRolesByUserId()
+                    let resData = res.data.data;
+                    resData.forEach(item=>{
+                        let roleId = item['roleId'];
+                        for(let obj of this.allRoles){
+                            if(obj['roleId'] === roleId){
+                                item['roleName'] = obj['roleName'];
+                                break;
+                            }
+                        }
+                        this.tableData.push(item);
+                    });
+
+                    // this.getAllRolesByUserId()
                     this.$message.success('添加成功');
                 }
             }).catch(err=>{

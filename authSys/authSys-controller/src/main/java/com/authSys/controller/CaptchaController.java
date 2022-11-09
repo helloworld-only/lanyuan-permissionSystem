@@ -1,6 +1,7 @@
 package com.authSys.controller;
 
 import com.authSys.domain.ResponseResult;
+import com.authSys.utils.JwtUtil;
 import com.wf.captcha.ArithmeticCaptcha;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FastByteArrayOutputStream;
@@ -30,7 +31,8 @@ public class CaptchaController {
      */
     @RequestMapping("/captchaImg")
     @ResponseBody
-    public ResponseResult getCaptchaImg(){
+    public ResponseResult getCaptchaImg(HttpSession session){
+
         // 算数类型的图片验证码
         ArithmeticCaptcha captcha = new ArithmeticCaptcha(111,36);
 
@@ -44,14 +46,22 @@ public class CaptchaController {
             result = captcha.text();
         }
 
+//        System.out.println(session.getId());
 //        session.setAttribute("captchaResult", result);
+//        System.out.println("captchaResult = " + session.getAttribute("captchaResult"));
 
 
         String code = captcha.toBase64(); // 生成的图片验证码的base64编码
 
         Map<String,Object> data = new HashMap<>();
         data.put("code", code);
+
         ResponseResult success = ResponseResult.success(data);
+
+        String token = JwtUtil.getToken(result);
+
+        success.put("token", token);
+
         return success;
     }
 
