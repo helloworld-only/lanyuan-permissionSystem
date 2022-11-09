@@ -23,13 +23,13 @@ public class Client {
 
         System.out.println(compact);
 
-        try{
-            Thread.sleep(1000);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try{
+//            Thread.sleep(1000);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         JwtParser parser = Jwts.parser();
-        Jws<Claims> claimsJws = parser.setSigningKey(key).parseClaimsJws(compact);
+        Jws<Claims> claimsJws = parser.setSigningKey(key).parseClaimsJws(compact+1);
         Claims body = claimsJws.getBody();
 
         System.out.println(body.getId());

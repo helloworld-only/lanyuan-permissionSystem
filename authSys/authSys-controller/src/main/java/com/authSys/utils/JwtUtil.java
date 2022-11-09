@@ -1,5 +1,6 @@
 package com.authSys.utils;
 
+import com.authSys.entity.UserEntity;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
@@ -12,9 +13,9 @@ public class JwtUtil {
 
     private static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private static long captchaTTL = 60 * 1 * 1000; // 单位：毫秒
+    private static long captchaTTL = 1000 * 60 * 1; // 单位：毫秒
 
-    private static long loginTTL = 60 * 30 * 1000;
+    private static long loginTTL = 1000 * 60 * 30;
 
 
     public static String getToken(String captchaResult){
@@ -33,7 +34,7 @@ public class JwtUtil {
         return token;
     }
 
-    public static String getToken(String userId, String acct){
+    public static String getToken(UserEntity userEntity){
         String token = "";
 
         JwtBuilder builder = Jwts.builder();
@@ -41,8 +42,9 @@ public class JwtUtil {
         builder.setId(UUID.randomUUID().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + loginTTL))
-                .claim("userId", userId)
-                .claim("acct", acct)
+//                .claim("userId", userId)
+//                .claim("acct", acct)
+                .claim("userEntity",userEntity)
                 .signWith(key);
 
         token = builder.compact();
@@ -50,7 +52,7 @@ public class JwtUtil {
         return token;
     }
 
-    public static Claims parseToken(String token){
+    protected static Claims parseToken(String token){
         JwtParser parser = Jwts.parser();
         Claims body = parser.setSigningKey(key)
                 .parseClaimsJws(token)
@@ -62,6 +64,12 @@ public class JwtUtil {
         Claims claims = parseToken(token);
         String captchaResult = (String) claims.get("captchaResult");
         return captchaResult;
+    }
+
+    public static UserEntity getUserEntity(String token){
+        Claims claims = parseToken(token);
+        UserEntity userEntity = (UserEntity) claims.get("userEntity");
+        return userEntity;
     }
 
 }

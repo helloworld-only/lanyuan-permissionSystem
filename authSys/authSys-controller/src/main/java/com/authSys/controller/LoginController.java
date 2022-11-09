@@ -1,11 +1,14 @@
 package com.authSys.controller;
 
+import com.authSys.domain.Constants;
 import com.authSys.domain.ResponseResult;
 import com.authSys.entity.UserEntity;
 import com.authSys.service.UserService;
 import com.authSys.utils.JwtUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +68,15 @@ public class LoginController {
     @PostMapping("/home")
     @ResponseBody
     public ResponseResult loginCheck(UserEntity user, String code, String token){
-        String captchaResult = JwtUtil.getCaptchaResult(token);
+        String captchaResult = null;
+        try{
+            captchaResult = JwtUtil.getCaptchaResult(token);
+        }catch (ExpiredJwtException e){
+            ResponseResult.fail("验证码过期");
+        }catch(SignatureException e){
+            ResponseResult.fail("非法操作");
+        }
+
         if(!code.equals(captchaResult)){
             return ResponseResult.fail("验证码错误");
         }
@@ -75,6 +86,10 @@ public class LoginController {
             return ResponseResult.fail("用户名或密码错误");
         }
 
-        return ResponseResult.success("登录成功");
+        ResponseResult success = ResponseResult.success("登录成功");
+        String token1 = JwtUtil.getToken(userEntity); // 生成登录成功后的token
+        success.put(Constants.TOKEN,token1);
+        return success;
     }
+
 }

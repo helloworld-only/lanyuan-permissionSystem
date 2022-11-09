@@ -16,13 +16,14 @@
     <mvc:annotation-driven/>
 
     <!--     接口跨域配置-->
-    <mvc:cors>
-        <mvc:mapping path="/**"
-                     allowed-origins="*"
-                     allowed-methods="POST, GET, OPTIONS, DELETE, PUT"
-                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
-                     allow-credentials="true"/>
-    </mvc:cors>
+<!--    <mvc:cors>-->
+<!--        <mvc:mapping path="/**"-->
+<!--                     allowed-origins="*"-->
+<!--                     allowed-methods="POST, GET, OPTIONS, DELETE, PUT"-->
+<!--                     allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"-->
+<!--                     allow-credentials="true"/>-->
+<!--    </mvc:cors>-->
+
 
 <!--    <bean id="viewResolver" class="org.thymeleaf.spring5.view.ThymeleafViewResolver">-->
 <!--        &lt;!&ndash;设置当前视图解析器的优先级（也就是说可配置多个视图解析器）&ndash;&gt;-->
