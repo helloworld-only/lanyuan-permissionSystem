@@ -149,7 +149,6 @@ export default {
         }
       })
       .then(res => {
-        console.log(res);
         if(res.data.code === 200){
           window.localStorage.setItem('token',res.data.token) // 保存token
           this.$router.push({

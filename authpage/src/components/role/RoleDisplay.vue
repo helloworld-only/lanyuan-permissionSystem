@@ -102,7 +102,7 @@ export default {
             const url = 'http://localhost' + this.$route.path;
             axios.get(url)
             .then(res => {
-                this.tableData = res.data;
+                this.tableData = res.data.data;
             })
             .catch(error =>{
                 console.log(error)
@@ -127,12 +127,15 @@ export default {
             method:'post',
             data:qs.stringify(this.formData),
             }).then(res => {
-            if(res.data.code === 200){
-                const newUser = res.data.data;
-                this.tableData.push(newUser);
-                // this.getAllRoles();
-                this.$message.success('添加成功');
-            }
+                if(res.data.code === 200){
+                    const newUser = res.data.data;
+                    this.tableData.push(newUser);
+                    // this.getAllRoles();
+                    this.$message.success('添加成功');
+                }else{
+                    let failMessage = '添加失败，' + res.data.msg;
+                    this.$message.error(failMessage);
+                }
             }).catch(err=>{
                 this.$message.error('添加失败');
             }).finally(()=>{
@@ -148,22 +151,23 @@ export default {
             method:'post',
             data:qs.stringify(this.formData),
             }).then(res => {
-            console.log(this.formData.roleId)
-            if(res.data.code === 200){
-                this.tableData = this.tableData.filter(item => {
-                if (this.formData.roleId == item.roleId){
-                    item.roleName = this.formData.roleName;
+                if(res.data.code === 200){
+                    this.tableData = this.tableData.filter(item => {
+                    if (this.formData.roleId == item.roleId){
+                        item.roleName = this.formData.roleName;
+                    }
+                    return true;
+                    });
+                    this.$message.success('更新成功');
+                }else{
+                    let failMessage = '更新失败，' + res.data.msg;
+                    this.$message.error(failMessage);
                 }
-                return true;
-                });
-                this.$message.success('更新成功');
-            }
             }).catch( err =>{
-            console.log(err)
-            this.$message.error('更新失败');
+                this.$message.error('更新失败');
             }).finally(()=>{
-            this.layerOpen = false;
-            this.formData = {}; // 更新后一定要清空formData，不然添加新用户时，新用户的userId就是当前所更新的用户的userId
+                this.layerOpen = false;
+                this.formData = {}; // 更新后一定要清空formData，不然添加新用户时，新用户的userId就是当前所更新的用户的userId
             })
         },
         // 取消更新数据
@@ -182,11 +186,17 @@ export default {
                 const url = "http://localhost/home/role/delete/" + roleId;
                 axios.get(url)
                 .then(res =>{
-                    // 这里不采用访问后端接口来更新数据，而是通过前端删除该条数据（建立在删除请求成功后执行）
-                    this.tableData = this.tableData.filter((item)=>{
-                        return item.roleId != roleId;
-                    });
-                    this.$message.success('删除成功');
+                    if(res.data.code === 200){
+                        // 这里不采用访问后端接口来更新数据，而是通过前端删除该条数据（建立在删除请求成功后执行）
+                        this.tableData = this.tableData.filter((item)=>{
+                            return item.roleId != roleId;
+                        });
+                        this.$message.success('删除成功');
+                    }else{
+                        let failMessage = '删除失败，' + res.data.msg;
+                        this.$message.error(failMessage);
+                    }
+                    
                 }).catch(err=>{
                     this.$message.error('删除失败' + err)
                 })

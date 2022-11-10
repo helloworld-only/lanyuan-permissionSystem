@@ -119,7 +119,12 @@ export default {
         const url = 'http://localhost' + this.$route.path;
         axios.get(url)
         .then(res => {
-            this.tableData = res.data;
+          if(res.data.code === 200){
+            this.tableData = res.data.data;
+          }else{
+            this.$message.error(res.data.msg);
+          }
+            
         })
         .catch(error =>{
             console.log(error)
@@ -172,6 +177,9 @@ export default {
           // this.tableData.push(newUser);
           this.getAllUsers()
           this.$message.success('添加成功');
+        }else{
+          let failMessage = '添加失败，' + res.data.msg;
+          this.$message.error(failMessage);
         }
       }).catch(err=>{
         this.$message.error('添加失败');
@@ -198,6 +206,9 @@ export default {
             return true;
           });
           this.$message.success('更新成功');
+        }else{
+          let failMessage = '更新失败，' + res.data.msg;
+          this.$message.error(failMessage);
         }
       }).catch( err =>{
         console.log(err)
@@ -223,11 +234,16 @@ export default {
         const url = "http://localhost/home/user/delete/" + userId;
         axios.get(url)
         .then(res =>{
-          // 这里不采用访问后端接口来更新数据，而是通过前端删除该条数据（建立在删除请求成功后执行）
-          this.tableData = this.tableData.filter((item)=>{
-            return item.userId != userId;
-          });
-          this.$message.success('删除成功');
+          if(res.data.code === 200){
+            // 这里不采用访问后端接口来更新数据，而是通过前端删除该条数据（建立在删除请求成功后执行）
+            this.tableData = this.tableData.filter((item)=>{
+              return item.userId != userId;
+            });
+            this.$message.success('删除成功');
+          }else{
+            let failMessage = '删除失败，' + res.data.msg;
+            this.$message.error(failMessage);
+          }
         }).catch(err=>{
           this.$message.error('删除失败' + err)
         })

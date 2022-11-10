@@ -95,7 +95,7 @@ export default {
             const url = 'http://localhost' + this.$route.path;
             axios.get(url)
             .then(res => {
-                this.tableData = res.data;
+                this.tableData = res.data.data;
                 if(this.tableData.length > 1){
                     let sortKey = Object.keys(this.tableData[0])[0];
 

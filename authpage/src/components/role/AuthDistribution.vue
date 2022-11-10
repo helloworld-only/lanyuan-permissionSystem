@@ -88,7 +88,7 @@ export default {
             const url = 'http://localhost/home/auth';
             axios.get(url)
             .then(res => {
-                this.allAuths = res.data
+                this.allAuths = res.data.data
             })
             .catch(error =>{
                 console.log(error)
@@ -103,7 +103,7 @@ export default {
             const url = 'http://localhost' + this.$route.path;
             axios.get(url)
             .then(res => {
-                this.tableData = res.data;
+                this.tableData = res.data.data;
             })
             .catch(error =>{
                 console.log(error)
@@ -142,9 +142,7 @@ export default {
                 method:'post',
                 data:this.checkedAuthId,
             }).then(res => {
-                if(res.data.code === 200){
-
-                    
+                if(res.data.code === 200){    
                     let resData = res.data.data;
                     resData.forEach(item=>{
                         let authId = item['authId'];

@@ -4,13 +4,13 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
-      <context-param>
-          <param-name>contextConfigLocation</param-name>
-          <param-value>classpath*:component-spring.xml</param-value>
-      </context-param>
-      <listener>
-          <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-      </listener>
+<!--      <context-param>-->
+<!--          <param-name>contextConfigLocation</param-name>-->
+<!--          <param-value>classpath*:spring-component.xml</param-value>-->
+<!--      </context-param>-->
+<!--      <listener>-->
+<!--          <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
+<!--      </listener>-->
 
   <!-- 这个filter必须放在最前面 -->
   <filter>
@@ -42,6 +42,17 @@
     <filter-name>simpleCorsFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+
+  <filter>
+    <!--filtername必须是下列值-->
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
 
   <!-- 由于servlet是在第一次访问的时候才会创建，而DispatcherServlet初始化需要花费大量时间，所以需要DispatcherServlet在启动的时候就初始化-->
   <servlet>

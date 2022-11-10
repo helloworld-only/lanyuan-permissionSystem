@@ -18,9 +18,9 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping("")
-    public List<RoleEntity> getAllRoles(){
+    public ResponseResult getAllRoles(){
         List<RoleEntity> allRoles = roleService.getAllRoles();
-        return allRoles;
+        return ResponseResult.success(allRoles);
     }
 
     @RequestMapping("/delete/{id}")

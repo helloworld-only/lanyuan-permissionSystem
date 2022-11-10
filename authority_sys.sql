@@ -78,3 +78,11 @@ from role_auth,t_auth
 where role_auth.auth_id = t_auth.auth_id)
 
 select * from role_auth_view;
+
+drop view  if exists user_auth_view;
+create view user_auth_view as
+(select distinct user_role.user_id, role_auth_view.auth_name
+from user_role, role_auth_view
+where user_role.role_id = role_auth_view.role_id)
+
+select * from user_auth_view;

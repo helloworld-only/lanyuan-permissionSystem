@@ -48,6 +48,11 @@ public class UserService {
         return user;
     }
 
+    public UserEntity getByAcct(String acct){
+        UserEntity userEntity = userMapper.selectByAcct(acct);
+        return userEntity;
+    }
+
     public UserEntity getByAcctAndPw(UserEntity user){
         String acct = user.getAcct();
         String passwd = user.getPasswd();

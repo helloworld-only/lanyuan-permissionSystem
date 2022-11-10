@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.sql.DataSource;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:component-spring.xml")
+@ContextConfiguration("classpath:spring-component.xml")
 public class Client {
 //    @Autowired
 //    private UserService userService;

@@ -22,8 +22,10 @@ public interface UserMapper {
 
     UserEntity selectById(Integer id);
 
+
     UserEntity selectByAcctAndPw(@Param("acct") String acct, @Param("passwd") String passwd);
 
     List<UserEntity> selectByKeyName(String key);
 
+    UserEntity selectByAcct(String acct);
 }

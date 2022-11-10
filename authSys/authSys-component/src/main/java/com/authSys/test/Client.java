@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class Client {
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("component-spring.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-component.xml");
         UserService  userService = (UserService) context.getBean("userService");
         UserEntity user = userService.getById(1);
         System.out.println(user);
@@ -19,7 +19,7 @@ public class Client {
     }
 
     public static void dao(){
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("component-spring.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-component.xml");
         DruidDataSource  dataSource = (DruidDataSource) context.getBean("dataSource");
         System.out.println(dataSource.getPassword());
         System.out.println(dataSource.getUsername());

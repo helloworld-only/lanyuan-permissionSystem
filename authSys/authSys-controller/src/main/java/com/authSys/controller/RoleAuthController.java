@@ -21,9 +21,9 @@ public class RoleAuthController {
     private RoleAuthService roleAuthService;
 
     @RequestMapping("")
-    public List<RoleAuthEntity> getAuthsByRoleId(@PathVariable("roleId") Integer roleId){
+    public ResponseResult getAuthsByRoleId(@PathVariable("roleId") Integer roleId){
         List<RoleAuthEntity> list = roleAuthService.selectViewByRoleId(roleId);
-        return list;
+        return ResponseResult.success(list);
     }
 
     @RequestMapping("/delete/{id}")

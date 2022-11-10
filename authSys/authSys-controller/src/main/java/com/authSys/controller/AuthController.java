@@ -18,9 +18,9 @@ public class AuthController {
     private AuthService authService;
 
     @RequestMapping("")
-    public List<AuthEntity> getAllAuths(){
+    public ResponseResult getAllAuths(){
         List<AuthEntity> allAuths = authService.getAllAuths();
-        return allAuths;
+        return ResponseResult.success(allAuths);
     }
 
     @RequestMapping("/add")

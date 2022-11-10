@@ -17,9 +17,9 @@ public class UserRoleController {
     private UserRoleService userRoleService;
 
     @RequestMapping("")
-    public List<UserRoleEntity> getRolesByUserId(@PathVariable("userId") Integer userId){
+    public ResponseResult getRolesByUserId(@PathVariable("userId") Integer userId){
         List<UserRoleEntity> userAllRoles = userRoleService.getViewByUserId(userId);
-        return userAllRoles;
+        return ResponseResult.success(userAllRoles);
     }
 
     @RequestMapping("/delete/{id}")

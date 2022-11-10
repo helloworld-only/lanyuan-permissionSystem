@@ -47,6 +47,10 @@ useGeneratedKeys="true"
         select user_id, acct, passwd, user_name from t_user where user_id = #{useId}
     </select>
 
+    <select id="selectByAcct" resultMap="baseResultMap">
+        select user_id, acct, passwd, user_name from t_user where acct = #{acct}
+    </select>
+
     <select id="selectByAcctAndPw" resultMap="baseResultMap">
         select user_id, acct, passwd, user_name from t_user where acct = #{acct} and passwd = #{passwd};
     </select>

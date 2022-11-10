@@ -22,6 +22,34 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/home")
+    @ResponseBody
+    public ResponseResult loginCheck(UserEntity user, String code, String token){
+        String captchaResult = null;
+        try{
+            captchaResult = JwtUtil.getCaptchaResult(token);
+        }catch (ExpiredJwtException e){
+            ResponseResult.fail("验证码过期");
+        }catch(SignatureException e){
+            ResponseResult.fail("非法操作");
+        }
+
+        if(!code.equals(captchaResult)){
+            return ResponseResult.fail("验证码错误");
+        }
+
+        UserEntity userEntity = userService.getByAcctAndPw(user);
+        if(userEntity == null){
+            return ResponseResult.fail("用户名或密码错误");
+        }
+
+        ResponseResult success = ResponseResult.success("登录成功");
+        String token1 = JwtUtil.getToken(userEntity); // 生成登录成功后的token
+        success.put(Constants.TOKEN,token1);
+        return success;
+    }
+
+
     //UserEntity user, String code, HttpSession session
 //    @PostMapping("/home")
 //    @ResponseBody
@@ -65,31 +93,6 @@ public class LoginController {
         return ResponseResult.success("登录成功");
     }
 
-    @PostMapping("/home")
-    @ResponseBody
-    public ResponseResult loginCheck(UserEntity user, String code, String token){
-        String captchaResult = null;
-        try{
-            captchaResult = JwtUtil.getCaptchaResult(token);
-        }catch (ExpiredJwtException e){
-            ResponseResult.fail("验证码过期");
-        }catch(SignatureException e){
-            ResponseResult.fail("非法操作");
-        }
 
-        if(!code.equals(captchaResult)){
-            return ResponseResult.fail("验证码错误");
-        }
-
-        UserEntity userEntity = userService.getByAcctAndPw(user);
-        if(userEntity == null){
-            return ResponseResult.fail("用户名或密码错误");
-        }
-
-        ResponseResult success = ResponseResult.success("登录成功");
-        String token1 = JwtUtil.getToken(userEntity); // 生成登录成功后的token
-        success.put(Constants.TOKEN,token1);
-        return success;
-    }
 
 }

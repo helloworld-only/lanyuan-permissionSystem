@@ -67,4 +67,16 @@ public class ResponseResult extends HashMap<String,Object> {
         return this;
     }
 
+    public void setCode(int code){
+        super.put(CODE_TAG, code);
+    }
+
+    public void setMsg(String msg){
+        super.put(MSG_TAG, msg);
+    }
+
+    public void setData(Object data){
+        super.put(DATA_TAG, data);
+    }
+
 }

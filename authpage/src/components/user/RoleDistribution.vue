@@ -94,7 +94,7 @@ export default {
             const url = 'http://localhost/home/role';
             axios.get(url)
             .then(res => {
-                this.allRoles = res.data
+                this.allRoles = res.data.data
             })
             .catch(error =>{
                 console.log(error)
@@ -109,7 +109,8 @@ export default {
             const url = 'http://localhost' + this.$route.path;
             axios.get(url)
             .then(res => {
-                this.tableData = res.data;
+                console.log(res)
+                this.tableData = res.data.data;
             })
             .catch(error =>{
                 console.log(error)

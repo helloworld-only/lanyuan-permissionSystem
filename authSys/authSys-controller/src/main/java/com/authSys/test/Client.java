@@ -1,8 +1,12 @@
 package com.authSys.test;
 
+import com.authSys.entity.UserEntity;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
+import java.io.IOException;
 import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
@@ -10,12 +14,18 @@ import java.util.UUID;
 public class Client {
     public static void main(String[] args) {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-        long expireTime = 60;
+        long expireTime = 10000;
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUserId(1);
+        userEntity.setAcct("11111111");
+        userEntity.setPasswd("123");
+        userEntity.setUserName("admin");
+
         JwtBuilder builder = Jwts.builder();
         String compact = builder.setHeaderParam("type", "JWT")
                 .setHeaderParam("alg", "HS256")
-                .claim("userName", "admin")
-                .claim("passwd", "123")
+                .claim("userEntity",userEntity)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(key)
@@ -29,13 +39,20 @@ public class Client {
 //            e.printStackTrace();
 //        }
         JwtParser parser = Jwts.parser();
-        Jws<Claims> claimsJws = parser.setSigningKey(key).parseClaimsJws(compact+1);
+        Jws<Claims> claimsJws = parser.setSigningKey(key).parseClaimsJws(compact);
         Claims body = claimsJws.getBody();
 
-        System.out.println(body.getId());
-        System.out.println(body.getSubject());
-        System.out.println(body.get("userName"));
-        System.out.println(body.get("passwd"));
+        String user = body.get("userEntity").toString();
+        System.out.println(user);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            UserEntity userEntity1 = objectMapper.readValue(user, UserEntity.class);
+            System.out.println(userEntity1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 

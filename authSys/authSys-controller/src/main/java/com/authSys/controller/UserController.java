@@ -26,9 +26,9 @@ public class UserController {
 
     @RequestMapping("")
     @ResponseBody
-    public List<UserEntity> getAllUsers(){
+    public ResponseResult getAllUsers(){
         List<UserEntity> allUsers = userService.getAllUsers();
-        return allUsers;
+        return ResponseResult.success(allUsers);
     }
 
     @RequestMapping("/add")
