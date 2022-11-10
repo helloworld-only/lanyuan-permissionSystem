@@ -37,44 +37,36 @@ public class WebAppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("acct")
                 .passwordParameter("passwd")
                 .loginProcessingUrl("/home")
-                .successHandler(new SysAuthenticationSuccessHandler())
-                .failureHandler(new SysAuthenticationFailureHandler())
+                .successHandler(new SysAuthenticationSuccessHandler())  //认证成功的处理
+                .failureHandler(new SysAuthenticationFailureHandler())  // 认证失败的处理
 
                 .and()
                 .authorizeRequests() //对请求进行授权
 
-                .antMatchers(HttpMethod.OPTIONS)
-                .permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
 
-                .antMatchers("/captchaImg")
-                .permitAll()
+                .antMatchers("/captchaImg").permitAll()
 
-                .antMatchers("/home")
-                .permitAll()
+                .antMatchers("/home").permitAll()
 
-                .antMatchers("/home/*/")
-                .hasAuthority("Select")
+                .regexMatchers("/home/.*").access("hasRole(admin) or hasAuthority(Select)")
+//                .antMatchers("/home/*")
+//                .hasAuthority("Select")
+//                .accessDecisionManager()
 
-                .antMatchers("/home/*/add")
-                .hasAuthority("Insert")
+                .antMatchers("/home/*/add").hasAuthority("Insert")
 
-                .antMatchers("/home/*/delete/*/")
-                .hasAuthority("Delete")
+                .antMatchers("/home/*/delete/*/").hasAuthority("Delete")
 
-                .antMatchers("/home/*/update")
-                .hasAuthority("Update")
+                .antMatchers("/home/*/update").hasAuthority("Update")
 
-                .antMatchers("/home/*/*/*Distribution")
-                .hasAuthority("Select")
+                .antMatchers("/home/*/*/*Distribution").hasAuthority("Select")
 
-                .antMatchers("/home/*/*/*Distribution/add")
-                .hasAuthority("Insert")
+                .antMatchers("/home/*/*/*Distribution/add").hasAuthority("Insert")
 
-                .antMatchers("/home/*/*/*Distribution/delete/*/")
-                .hasAuthority("Delete")
+                .antMatchers("/home/*/*/*Distribution/delete/*/").hasAuthority("Delete")
 
-                .antMatchers("/**")
-                .hasRole("admin")   //对于admin，任何请求都通过
+                .antMatchers("/**").hasRole("admin")   //对于admin，任何请求都通过
 
                 .and()
                 .authorizeRequests()

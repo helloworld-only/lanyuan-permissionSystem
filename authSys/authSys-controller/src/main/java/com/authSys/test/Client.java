@@ -1,18 +1,45 @@
 package com.authSys.test;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.authSys.entity.UserAuthEntity;
 import com.authSys.entity.UserEntity;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.jdbc.Driver;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.security.Key;
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class Client {
-    public static void main(String[] args) {
+
+
+
+    public static void main(String[] args) throws SQLException {
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUsername("root");
+        dataSource.setPassword("lwb");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/authority_sys");
+        dataSource.setDriver(new Driver());
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.setDataSource(dataSource);
+        String sql = "select auth_name from user_auth_view where user_id = ?";
+        BeanPropertyRowMapper<UserAuthEntity> mapper = new BeanPropertyRowMapper<>(UserAuthEntity.class);
+        List<UserAuthEntity> auths = jdbcTemplate.query(sql, mapper, 7);
+        System.out.println(auths);
+    }
+
+    public static void testJwt1(){
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         long expireTime = 10000;
 
@@ -52,7 +79,6 @@ public class Client {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
     }
 

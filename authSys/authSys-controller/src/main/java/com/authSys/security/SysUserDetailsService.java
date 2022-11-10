@@ -1,5 +1,6 @@
 package com.authSys.security;
 
+import com.authSys.entity.UserAuthEntity;
 import com.authSys.entity.UserEntity;
 import com.authSys.entity.UserRoleEntity;
 import com.authSys.service.AuthService;
@@ -47,10 +48,8 @@ public class SysUserDetailsService implements UserDetailsService {
 
         // 2. 获取该用户所具有的权限
         String sql = "select auth_name from user_auth_view where user_id = ?";
-        BeanPropertyRowMapper<String> mapper = new BeanPropertyRowMapper<>(String.class);
-        List<String> auths = jdbcTemplate.query(sql, mapper, userId);
-
-        System.out.println(auths);
+        BeanPropertyRowMapper<UserAuthEntity> mapper = new BeanPropertyRowMapper<>(UserAuthEntity.class);
+        List<UserAuthEntity> auths = jdbcTemplate.query(sql, mapper, userId);
 
         // 3. 获得该用户所具有的角色
         List<UserRoleEntity> userRoleEntities = userRoleService.getViewByUserId(userId);
@@ -60,8 +59,8 @@ public class SysUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         // 4.1 封装权限
-        for(String auth : auths){
-            authorities.add(new SimpleGrantedAuthority(auth));
+        for(UserAuthEntity auth : auths){
+            authorities.add(new SimpleGrantedAuthority(auth.getAuthName()));
         }
         // 4.2 封装角色
         for(UserRoleEntity entity : userRoleEntities){
