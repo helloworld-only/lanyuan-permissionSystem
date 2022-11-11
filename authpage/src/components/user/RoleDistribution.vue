@@ -109,8 +109,13 @@ export default {
             const url = 'http://localhost' + this.$route.path;
             axios.get(url)
             .then(res => {
-                console.log(res)
-                this.tableData = res.data.data;
+                if(res.data.code === 200){
+                    this.tableData = res.data.data;
+                }else{
+                    let failMessage = '查询失败，' + res.data.msg;
+                    this.$message.error(failMessage) 
+                }
+                
             })
             .catch(error =>{
                 console.log(error)
@@ -149,6 +154,7 @@ export default {
                 method:'post',
                 data:this.checkedRoleId,
             }).then(res => {
+                console.log(res)
                 if(res.data.code === 200){
                     let resData = res.data.data;
                     resData.forEach(item=>{
@@ -164,6 +170,9 @@ export default {
 
                     // this.getAllRolesByUserId()
                     this.$message.success('添加成功');
+                }else{
+                    let failMessage = '添加失败，' + res.data.msg;
+                    this.$message.error(failMessage)
                 }
             }).catch(err=>{
                 this.$message.error('添加失败');
@@ -189,13 +198,19 @@ export default {
                 const url = "http://localhost/home/user/" + row.userId + "/roleDistribution/delete/" + id;
                 axios.get(url)
                 .then(res =>{
-                    // 这里不采用访问后端接口来更新数据，而是通过前端删除该条数据（建立在删除请求成功后执行）
-                    this.tableData = this.tableData.filter((item)=>{
-                        return item.id != id;
-                    });
-                    this.$message.success('删除成功');
+                    if(res.data.code === 200){
+                        // 这里不采用访问后端接口来更新数据，而是通过前端删除该条数据（建立在删除请求成功后执行）
+                        this.tableData = this.tableData.filter((item)=>{
+                            return item.id != id;
+                        });
+                        this.$message.success('删除成功');
+                    }else{
+                        let failMessage = '删除失败，' + res.data.msg;
+                        this.$message.error(failMessage)
+                    }
+                    
                 }).catch(err=>{
-                    this.$message.error('删除失败' + err)
+                    this.$message.error('删除失败，' + err)
                 })
             }).catch(()=>{
                 this.$message.info('取消删除成功')

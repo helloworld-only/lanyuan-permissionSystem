@@ -102,7 +102,12 @@ export default {
             const url = 'http://localhost' + this.$route.path;
             axios.get(url)
             .then(res => {
-                this.tableData = res.data.data;
+                if(res.data.code === 200){
+                    this.tableData = res.data.data;
+                }else{
+                    let failMessage = '查询失败，' + res.data.msg;
+                    this.$message.error(failMessage) 
+                }
             })
             .catch(error =>{
                 console.log(error)

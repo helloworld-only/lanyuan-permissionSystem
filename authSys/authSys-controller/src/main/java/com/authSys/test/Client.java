@@ -11,33 +11,53 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.security.Key;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Client {
 
 
 
-    public static void main(String[] args) throws SQLException {
-        DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUsername("root");
-        dataSource.setPassword("lwb");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/authority_sys");
-        dataSource.setDriver(new Driver());
+    public static void main(String[] args) throws SQLException, IOException {
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        long expireTime = 10000;
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        jdbcTemplate.setDataSource(dataSource);
-        String sql = "select auth_name from user_auth_view where user_id = ?";
-        BeanPropertyRowMapper<UserAuthEntity> mapper = new BeanPropertyRowMapper<>(UserAuthEntity.class);
-        List<UserAuthEntity> auths = jdbcTemplate.query(sql, mapper, 7);
-        System.out.println(auths);
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+        collection.add(new SimpleGrantedAuthority("1"));
+        collection.add(new SimpleGrantedAuthority("2"));
+
+        System.out.println(collection.toString());
+
+        JwtBuilder builder = Jwts.builder();
+        String compact = builder.setHeaderParam("type", "JWT")
+                .setHeaderParam("alg", "HS256")
+                .claim("collection",collection.toString())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .signWith(key)
+                .compact();
+
+        System.out.println(compact);
+
+        JwtParser parser = Jwts.parser();
+        Jws<Claims> claimsJws = parser.setSigningKey(key).parseClaimsJws(compact);
+        Claims body = claimsJws.getBody();
+
+        String  auths = (String) body.get("collection");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> list = objectMapper.readValue(auths, List.class);
+        System.out.println(list);
+
     }
+
+
 
     public static void testJwt1(){
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);

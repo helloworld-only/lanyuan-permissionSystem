@@ -20,7 +20,7 @@ public class SysAuthenticationFailureHandler implements AuthenticationFailureHan
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
         ResponseResult ajax = new ResponseResult();
-        ajax.setCode(401);
+        ajax.setCode(400);
 
         if(e instanceof BadCredentialsException){
             ajax.setMsg("密码错误");

@@ -1,0 +1,47 @@
+访问：http://localhost/captchaImg	（请求图片验证码的url，所有人都可以访问）：
+
+UsernamePasswordAuthenticationFilter -》 RequestCacheAwareFilter -》SecurityContextHolderAwareRequestFilter
+-》AnonymousAuthenticationFilter -》SessionManagementFilter -》ExceptionTranslationFilter -》FilterSecurityInterceptor
+
+
+访问：http://localhost/home	（处理登录请求）
+WebAsyncManagerIntegrationFilter
+
+SecurityContextPersistenceFilter	：No HttpSession currently exists
+
+HeaderWriterFilter
+
+LogoutFilter	：检查当前请求是否时退出登陆的请求
+
+UsernamePasswordAuthenticationFilter : 开始进行登录检查（获得User对象）(会调用UserServiceDetails的方法获得User对象）
+	 Authentication attempt using org.springframework.security.authentication.dao.DaoAuthenticationProvider
+	认证成功后将User对象保存至session中
+	
+	调用ProviderManager的authenticate方法，获得User对象
+	（保存在UsernamePasswordAuthenticationToken的principal中，其实这个principal就是User对象，包含用户名、密码、权限等）
+
+
+访问需要登录的请求
+WebAsyncManagerIntegrationFilter
+SecurityContextPersistenceFilter
+	从session中获得User对象
+HeaderWriterFilter
+LogoutFilter
+UsernamePasswordAuthenticationFilter
+	
+RequestCacheAwareFilter
+SecurityContextHolderAwareRequestFilter
+AnonymousAuthenticationFilter
+SessionManagementFilter
+ExceptionTranslationFilter
+FilterSecurityInterceptor
+
+FilterSecurityInterceptor - Authorization successful
+
+DispatcherServlet
+
+
+关键点：
+	AbstractAuthenticationProcessingFilter.doFilter() -> UsernamePasswordAuthenticationFilter.attemptAuthentication
+
+

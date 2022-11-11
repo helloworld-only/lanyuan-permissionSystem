@@ -346,6 +346,40 @@
 
 
 
+## 10. SpringSecurity观察日志问题
+
+> 有时候需要观察打印的日志，看是否路径匹配成功、所需权限是否正确：
+
+* **查看请求匹配哪个路径**
+
+> 可以看出，SpringSecurity的匹配顺序是根据配置类中的配置顺序来匹配的，只要匹配成功就不会继续匹配了，所以，匹配范围小的一定要放在前面
+>
+> ```
+> .AntPathRequestMatcher - Checking match of request : '/home/user/4/roleDistribution/delete/4'; against '/captchaImg'
+> 
+> AntPathRequestMatcher - Checking match of request : '/home/user/4/roleDistribution/delete/4'; against '/home'
+> 
+> AntPathRequestMatcher - Checking match of request : '/home/user/4/roleDistribution/delete/4'; against '/home/*'
+> ```
+>
+> 
+
+* **查看所匹配的路径需要什么权限**
+
+> FilterSecurityInterceptor - Secure object: FilterInvocation: **URL: /home/user?token=undefined; Attributes: [hasAnyRole({'admin','selecter'}) or hasAuthority('Select')]**
+
+
+
+* **查看当前是哪个用户的请求、具有哪些权限**
+
+> FilterSecurityInterceptor - Previously Authenticated: org.springframework.security.authentication.UsernamePasswordAuthenticationToken@b39cd632: Principal: com.authSys.security.SysUser@8d4fca20: Username: 20221102; Password: [PROTECTED]; Enabled: true; AccountNonExpired: true; credentialsNonExpired: true; AccountNonLocked: true; Granted Authorities: ROLE_admin; Credentials: [PROTECTED]; Authenticated: true; Details: org.springframework.security.web.authentication.WebAuthenticationDetails@2cd90: RemoteIpAddress: 0:0:0:0:0:0:0:1; SessionId: F8092A3D5A9A9131A52D07DD608DD8DB; **Granted Authorities: ROLE_admin**
+
+
+
+## 11.SpringSecurity用户在登录后期间，分配权限问题
+
+> admin在给已经登录的用户分配权限，该用户是享受不到该权限的，原因是在你登录过程中SpringSecurity就已经查询了数据库，并保存至内存中。
+
 # 三. 不了解的技术
 
 ## 1. jwt

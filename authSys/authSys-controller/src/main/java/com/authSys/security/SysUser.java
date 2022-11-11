@@ -10,8 +10,10 @@ public class SysUser extends User {
 
     private UserEntity userEntity;
 
+
     public SysUser(UserEntity userEntity, Collection<? extends GrantedAuthority> authorities){
         super(userEntity.getAcct(), "{noop}" + userEntity.getPasswd(), authorities);
+        this.userEntity = userEntity;
     }
 
     public UserEntity getUserEntity(){

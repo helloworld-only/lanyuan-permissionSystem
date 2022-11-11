@@ -25,10 +25,10 @@ public class SysAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ResponseResult ajax = new ResponseResult();
 
         if(e instanceof BadCredentialsException){
-            ajax.setCode(500);
-            ajax.setMsg("账号或密码错误");
+            ajax.setCode(400);
+            ajax.setMsg("登录信息有误，请重新登录");
         }else{
-           ajax.setCode(501);
+           ajax.setCode(401);
            ajax.setMsg("未登录");
         }
         httpServletResponse.setHeader("Content-Type", "application/json;charset=UTF-8");

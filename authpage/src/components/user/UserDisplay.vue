@@ -122,7 +122,8 @@ export default {
           if(res.data.code === 200){
             this.tableData = res.data.data;
           }else{
-            this.$message.error(res.data.msg);
+            let failMessage = '查询失败，' + res.data.msg;
+            this.$message.error(failMessage) 
           }
             
         })
