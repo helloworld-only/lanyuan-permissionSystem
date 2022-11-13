@@ -8,7 +8,9 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,10 +19,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 
 // 也可以通过 BasicAuthenticationFilter实现
 public class SysTokenAuthenticationFilter extends OncePerRequestFilter {
+
+    private UserDetailsService userDetailsService;
+
+    public SysTokenAuthenticationFilter(UserDetailsService userDetailsService){
+        this.userDetailsService = userDetailsService;
+    }
 
 //    public SysTokenAuthenticationFilter(AuthenticationManager authenticationManager) {
 //        super(authenticationManager);
@@ -28,34 +37,60 @@ public class SysTokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = request.getParameter(Constants.TOKEN);
-        if (token == null){
-            chain.doFilter(request, response);
-            return;
-        }
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(token);
 
-        if (authentication != null){
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        UsernamePasswordAuthenticationToken authentication = null;
+
+
+            authentication = getAuthentication(request, response);
+
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         chain.doFilter(request, response);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(String token){
-        UserEntity userEntity = null;
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter(Constants.TOKEN);
+        SysUser sysUser = null;
+        String acct = "";
+        String passwd = "";
+        Collection<GrantedAuthority> authorities = null;
 
-        try{
-            userEntity = JwtUtil.getUserEntity(token);
-        }catch (Exception e){
-            return null;
+
+        if("/home".equals(request.getRequestURI())){
+            // 进入这里说明是登录请求
+            acct = request.getParameter("acct");
+            passwd = request.getParameter("passwd");
+            sysUser = (SysUser) userDetailsService.loadUserByUsername(acct);
+            authorities = sysUser.getAuthorities();
+            request.setAttribute("sysUser", sysUser);
+        }else{
+            // 进入这里说明是非登录请求，会携带token。
+            if(token != null){
+                try{
+                    sysUser = JwtUtil.getSysUser(token);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+//            catch (ExpiredJwtException e){
+//
+//            }catch (SignatureException e){
+//
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+
+                if(sysUser != null){
+                    UserEntity userEntity = sysUser.getUserEntity();
+                    acct = userEntity.getAcct();
+                    passwd = userEntity.getPasswd();
+                    authorities = sysUser.getAuthorities();
+                }
+            }
         }
 
-        String acct = userEntity.getAcct();
-        String passwd = userEntity.getPasswd();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(acct, passwd, authorities);
 
-        if(acct != null && !acct.equals("")){
-            return new UsernamePasswordAuthenticationToken(acct, passwd);
-        }
-        return null;
+        return authentication;
     }
 }

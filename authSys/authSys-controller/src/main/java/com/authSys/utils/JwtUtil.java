@@ -17,9 +17,9 @@ public class JwtUtil {
 
     private static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private static long captchaTTL = 1000 * 60 * 1; // 单位：毫秒
+    private static long captchaTTL = 1000 * 60 * 40; // 单位：毫秒
 
-    private static long loginTTL = 1000 * 60 * 4;
+    private static long loginTTL = 1000 * 60 * 40;
 
 
     public static String getToken(String captchaResult){
@@ -140,11 +140,15 @@ public class JwtUtil {
 
         String obj = (String) claims.get("authorities");
         ObjectMapper objectMapper = new ObjectMapper();
-        List<String> tmp = objectMapper.readValue(obj, List.class);
 
-        for(String auth : tmp){
-            authorities.add(new SimpleGrantedAuthority(auth));
+        if(obj != null){
+            // 如果obj为null，objectMapper的readValue会报错
+            List<String> tmp = objectMapper.readValue(obj, List.class);
+            for(String auth : tmp){
+                authorities.add(new SimpleGrantedAuthority(auth));
+            }
         }
+
 
         SysUser sysUser = new SysUser(userEntity, authorities);
 

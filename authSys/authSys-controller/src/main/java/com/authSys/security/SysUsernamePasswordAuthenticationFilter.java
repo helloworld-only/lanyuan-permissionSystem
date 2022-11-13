@@ -58,64 +58,61 @@ public class SysUsernamePasswordAuthenticationFilter extends AbstractAuthenticat
 
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(httpServletRequest, httpServletResponse);
-        return null;
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+        System.out.println("sysUsernamePasswordAuthenticationFilter");
+        if (this.postOnly && !request.getMethod().equals("POST")) {
+            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+        } else {
+            UsernamePasswordAuthenticationToken authentication = getAuthentication(request, response);
+            AuthenticationManager authenticationManager = this.getAuthenticationManager();
+            return authenticationManager.authenticate(authentication);
+        }
+
+    }
+
+    protected void setDetails(HttpServletRequest request, UsernamePasswordAuthenticationToken authRequest) {
+        authRequest.setDetails(this.authenticationDetailsSource.buildDetails(request));
     }
 
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse response){
         String token = request.getParameter(Constants.TOKEN);
         SysUser sysUser = null;
-        if(token == null){
-            return null;
+        String acct = "";
+        String passwd = "";
+        Collection<GrantedAuthority> authorities = null;
+
+        if("/home".equals(request.getRequestURI())){
+            acct = request.getParameter("acct");
+            passwd = request.getParameter("passwd");
+        }else{
+            if(token != null){
+                try{
+                    sysUser = JwtUtil.getSysUser(token);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+//            catch (ExpiredJwtException e){
+//
+//            }catch (SignatureException e){
+//
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+
+                if(sysUser != null){
+                    UserEntity userEntity = sysUser.getUserEntity();
+                    acct = userEntity.getAcct();
+                    passwd = userEntity.getPasswd();
+                    authorities = sysUser.getAuthorities();
+                }
+            }
         }
 
-        try{
-            sysUser = JwtUtil.getSysUser(token);
-        }catch (ExpiredJwtException e){
 
-        }catch (SignatureException e){
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if(sysUser == null){
-            return null;
-        }
-
-        UserEntity userEntity = sysUser.getUserEntity();
-        String acct = userEntity.getAcct();
-        String passwd = userEntity.getPasswd();
-        Collection<GrantedAuthority> authorities = sysUser.getAuthorities();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(acct, passwd, authorities);
 
         return authentication;
-    }
-
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        super.successfulAuthentication(request, response, chain, authResult);
-    }
-
-    @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        super.unsuccessfulAuthentication(request, response, failed);
-    }
-
-    @Override
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        super.setAuthenticationManager(authenticationManager);
-    }
-
-    @Override
-    public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler successHandler) {
-        super.setAuthenticationSuccessHandler(successHandler);
-    }
-
-    @Override
-    public void setAuthenticationFailureHandler(AuthenticationFailureHandler failureHandler) {
-        super.setAuthenticationFailureHandler(failureHandler);
     }
 
 }

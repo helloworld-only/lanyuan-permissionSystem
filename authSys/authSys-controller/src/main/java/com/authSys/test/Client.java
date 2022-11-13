@@ -29,10 +29,10 @@ public class Client {
         long expireTime = 10000;
 
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new SimpleGrantedAuthority("1"));
-        collection.add(new SimpleGrantedAuthority("2"));
+        collection.add(new SimpleGrantedAuthority("ROLE_MIN"));
+        collection.add(new SimpleGrantedAuthority("ROLE_MAX"));
 
-        System.out.println(collection.toString());
+        System.out.println(collection);
 
         JwtBuilder builder = Jwts.builder();
         String compact = builder.setHeaderParam("type", "JWT")

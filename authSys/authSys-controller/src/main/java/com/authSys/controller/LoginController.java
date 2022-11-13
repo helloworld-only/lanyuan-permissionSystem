@@ -3,6 +3,7 @@ package com.authSys.controller;
 import com.authSys.domain.Constants;
 import com.authSys.domain.ResponseResult;
 import com.authSys.entity.UserEntity;
+import com.authSys.security.SysUser;
 import com.authSys.service.UserService;
 import com.authSys.utils.JwtUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,6 +25,33 @@ public class LoginController {
 
     @PostMapping("/home")
     @ResponseBody
+    public ResponseResult loginCheck(UserEntity userEntity, HttpServletRequest req){
+        SysUser sysUser = (SysUser) req.getAttribute("sysUser");
+
+        ResponseResult ajax = new ResponseResult();
+
+        if(sysUser == null){
+            ajax.setCode(400);
+            ajax.setMsg("用户不存在");
+        }else{
+            UserEntity userEntity1 = sysUser.getUserEntity();
+            String passwd = userEntity.getPasswd();
+            String passwd1 = userEntity1.getPasswd();
+            if (!passwd1.equals(passwd)){
+                ajax.setCode(400);
+                ajax.setMsg("用户名或密码错误");
+            }else{
+                ajax.setCode(200);
+                ajax.setMsg("登录成功");
+                String token = JwtUtil.getToken(sysUser);
+                ajax.put(Constants.TOKEN,token);
+            }
+        }
+        return ajax;
+    }
+
+
+
     public ResponseResult loginCheck(UserEntity user, String code, String token){
         String captchaResult = null;
         try{
