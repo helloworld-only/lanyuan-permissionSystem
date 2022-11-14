@@ -1,20 +1,15 @@
 package com.authSys.test;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.authSys.entity.UserAuthEntity;
 import com.authSys.entity.UserEntity;
-import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.jdbc.Driver;
+import com.fasterxml.jackson.databind.type.ArrayType;
+import com.fasterxml.jackson.databind.type.CollectionType;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.security.Key;
 import java.sql.SQLException;
@@ -28,16 +23,27 @@ public class Client {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
         long expireTime = 10000;
 
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(new SimpleGrantedAuthority("ROLE_MIN"));
-        collection.add(new SimpleGrantedAuthority("ROLE_MAX"));
+        Collection<GrantedAuthority> collections = new ArrayList<>();
+        collections.add(new SimpleGrantedAuthority("ROLE_MIN"));
+        collections.add(new SimpleGrantedAuthority("ROLE_MAX"));
+//        Collection<String> collection = new ArrayList<>();
+//        collection.add("ROLE_MIN");
+//        collection.add("ROLE_MAX");
+        List<String> strings = new ArrayList<>();
+        for (GrantedAuthority sga : collections){
+            String authority = sga.getAuthority();
+            strings.add(authority);
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        String collection = objectMapper.writeValueAsString(strings);
 
-        System.out.println(collection);
+
+        System.out.println(strings);
 
         JwtBuilder builder = Jwts.builder();
         String compact = builder.setHeaderParam("type", "JWT")
                 .setHeaderParam("alg", "HS256")
-                .claim("collection",collection.toString())
+                .claim("collection",strings)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(key)
@@ -49,11 +55,9 @@ public class Client {
         Jws<Claims> claimsJws = parser.setSigningKey(key).parseClaimsJws(compact);
         Claims body = claimsJws.getBody();
 
-        String  auths = (String) body.get("collection");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<String> list = objectMapper.readValue(auths, List.class);
+        List<String> list = (List<String>) body.get("collection");
         System.out.println(list);
+
 
     }
 

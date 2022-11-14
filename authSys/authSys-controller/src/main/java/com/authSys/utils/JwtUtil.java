@@ -72,7 +72,14 @@ public class JwtUtil {
         String passwd = userEntity.getPasswd();
         String userName = userEntity.getUserName();
 
-        Collection<GrantedAuthority> authorities = sysUser.getAuthorities();
+        Collection<GrantedAuthority> list = sysUser.getAuthorities();
+
+        List<String> authorities = new ArrayList<>();
+
+        for(GrantedAuthority ga : list){
+            String authority = ga.getAuthority();
+            authorities.add(authority);
+        }
 
         JwtBuilder builder = Jwts.builder();
         JwtBuilder jwtBuilder = builder.setId(UUID.randomUUID().toString())
@@ -82,7 +89,7 @@ public class JwtUtil {
                 .claim("acct", acct)
                 .claim("passwd",passwd)
                 .claim("userName",userName)
-                .claim("authorities", authorities.toString())
+                .claim("authorities", authorities)
                 .signWith(key);
         token = jwtBuilder.compact();
 
@@ -123,8 +130,6 @@ public class JwtUtil {
     public static SysUser getSysUser(String token) throws IOException {
         Claims claims = parseToken(token);
 
-
-
         Integer userId = (Integer) claims.get("userId");
         String acct = (String) claims.get("acct");
         String passwd = (String) claims.get("passwd");
@@ -138,13 +143,13 @@ public class JwtUtil {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        String obj = (String) claims.get("authorities");
+        List<String> auths = (List<String>) claims.get("authorities");
         ObjectMapper objectMapper = new ObjectMapper();
 
-        if(obj != null){
+        if(auths != null){
             // 如果obj为null，objectMapper的readValue会报错
-            List<String> tmp = objectMapper.readValue(obj, List.class);
-            for(String auth : tmp){
+
+            for(String auth : auths){
                 authorities.add(new SimpleGrantedAuthority(auth));
             }
         }
